@@ -16,6 +16,18 @@ Detect how many fingers a person is holding up via webcam, powered by MediaPipe'
 - Auto-downloads the ML model on first run
 - Press `q` to exit
 
+## Requirements
+
+- Python >= 3.9
+- A webcam
+
+Dependencies (`requirements.txt`):
+
+```
+opencv-python>=4.8.0
+mediapipe>=0.10.0
+```
+
 ## Quick Start
 
 ```bash
@@ -23,7 +35,52 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Requires Python >= 3.9 and a webcam.
+The first run automatically downloads a 7.5MB model file.
+
+## How It Works
+
+### Hand Landmarks
+
+MediaPipe HandLandmarker provides 21 keypoint coordinates per hand:
+
+```
+ 0: Wrist
+ 4: Thumb tip
+ 8: Index finger tip
+12: Middle finger tip
+16: Ring finger tip
+20: Pinky tip
+```
+
+### Finger Counting Logic
+
+| Finger | Rule |
+|--------|------|
+| Thumb | Compare tip(4) and IP(3) **x coordinates** — thumb moves sideways; direction depends on left/right hand |
+| Index | tip(8).y < PIP(6).y |
+| Middle | tip(12).y < PIP(10).y |
+| Ring | tip(16).y < PIP(14).y |
+| Pinky | tip(20).y < PIP(18).y |
+
+> In image coordinates, y-axis points downward, so **tip.y < PIP.y** means the fingertip is higher (extended).
+
+### Tech Stack
+
+- **OpenCV** — camera capture and image display
+- **MediaPipe HandLandmarker** — hand keypoint detection (new `mp.tasks.vision` API)
+- **MediaPipe hand_landmarker.task** — pretrained model (auto-downloaded)
+
+### Directory Structure
+
+```
+finger-counter/
+├── main.py              # Main program
+├── requirements.txt     # Python dependencies
+├── models/              # Model file (auto-downloaded, gitignored)
+│   └── hand_landmarker.task
+├── .gitignore
+└── README.md
+```
 
 ---
 
