@@ -2,7 +2,36 @@
 
 > Real-time finger counting using webcam + MediaPipe HandLandmarker.
 
-## 项目简介
+Detect how many fingers a person is holding up via webcam, powered by MediaPipe's 21-point hand landmark model. Works in real time with OpenCV display.
+
+**English · [中文文档](#项目简介)**
+
+---
+
+## Features
+
+- Real-time webcam capture with mirror display
+- 21-point hand skeleton overlay
+- Accurate finger counting (0–5) for one hand
+- Auto-downloads the ML model on first run
+- Press `q` to exit
+
+## Quick Start
+
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+Requires Python >= 3.9 and a webcam.
+
+---
+
+<br>
+
+---
+
+# 项目简介
 
 调用电脑摄像头实时检测画面中的人手，通过 MediaPipe 的 21 个手部关键点定位每根手指的位置，精确判断伸出了几根手指，并在画面中实时显示。
 
